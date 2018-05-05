@@ -10,7 +10,7 @@ import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 
-import org.activemq.jms.messagelistener.consumer.ConsumerMessageListener;
+import org.activemq.jms.messagelistener.FooMessageListener;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
@@ -37,7 +37,7 @@ public class MessageListenerTest {
 
             // Consumer
             MessageConsumer consumer = session.createConsumer(queue);
-            consumer.setMessageListener(new ConsumerMessageListener("Consumer"));
+            consumer.setMessageListener(new FooMessageListener("Consumer"));
             connection.start();
             Thread.sleep(1000);
             session.close();
