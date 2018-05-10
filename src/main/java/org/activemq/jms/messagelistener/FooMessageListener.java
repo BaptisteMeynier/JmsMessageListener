@@ -14,7 +14,12 @@ public class FooMessageListener implements MessageListener {
 	public void onMessage(Message message) {
 		TextMessage textMessage = (TextMessage) message;
 		try {
+			String payload = textMessage.getText();
+			if(payload.matches("-?\\d+")) {
+				throw new IllegalStateException();
+			}
 			System.out.println(consumerName + " received "	+ textMessage.getText());
+			
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
