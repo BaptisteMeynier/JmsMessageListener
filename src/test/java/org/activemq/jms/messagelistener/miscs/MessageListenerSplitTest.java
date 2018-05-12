@@ -16,6 +16,7 @@ import javax.jms.Session;
 
 import org.activemq.jms.messagelistener.FooMessageListener;
 import org.activemq.jms.messagelistener.FooMessageListenerException;
+import org.activemq.jms.messagelistener.constants.JmsConst;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerFactory;
 import org.apache.activemq.broker.BrokerService;
@@ -28,18 +29,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import org.junit.runners.MethodSorters;
-//@FixMethodOrder(MethodSorters.DEFAULT)
-@Ignore
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MessageListenerSplitTest {
 
-	private static String BROCKER_URI ="tcp://localhost:61616";
 
 	private static BrokerService broker;
 
 	private Connection connection;
 	@BeforeClass
 	public static void init() throws Exception {
-		broker = BrokerFactory.createBroker(new URI("broker:("+BROCKER_URI+")"));
+		broker = BrokerFactory.createBroker(new URI("broker:("+JmsConst.BROCKER_URI+")"));
 		broker.start();
 
 	}
@@ -51,8 +50,8 @@ public class MessageListenerSplitTest {
 
 	@Before
 	public void initConnection() throws JMSException {
-		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(BROCKER_URI);
-		Connection connection = connectionFactory.createConnection();
+		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(JmsConst.BROCKER_URI);
+		connection = connectionFactory.createConnection();
 		connection.setExceptionListener(new FooMessageListenerException());
 		connection.start();
 	}
@@ -65,7 +64,7 @@ public class MessageListenerSplitTest {
 	}
 
 	@Test
-	public void sendMessage() throws URISyntaxException, Exception{
+	public void test1_sendMessage() throws URISyntaxException, Exception{
 		Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
 		Queue queue = session.createQueue("customerQueue");
 		String payload = "Important Task";
@@ -77,7 +76,7 @@ public class MessageListenerSplitTest {
 	}
 
 	@Test
-	public void receiveMessage() throws URISyntaxException, Exception{
+	public void test2_receiveMessage() throws URISyntaxException, Exception{
 		Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
 		Queue queue = session.createQueue("customerQueue");
 		MessageConsumer consumer = session.createConsumer(queue);

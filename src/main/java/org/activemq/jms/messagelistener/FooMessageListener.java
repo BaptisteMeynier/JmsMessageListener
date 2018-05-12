@@ -4,6 +4,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
+import javax.jms.IllegalStateException;
 
 public class FooMessageListener implements MessageListener {
 	private String consumerName;
@@ -11,12 +12,12 @@ public class FooMessageListener implements MessageListener {
 		this.consumerName = consumerName;
 	}
 
-	public void onMessage(Message message) {
+	public void onMessage(Message message){
 		TextMessage textMessage = (TextMessage) message;
 		try {
 			String payload = textMessage.getText();
 			if(payload.matches("-?\\d+")) {
-				throw new IllegalStateException();
+				throw new IllegalStateException("message invalid");
 			}
 			System.out.println(consumerName + " received "	+ textMessage.getText());
 			

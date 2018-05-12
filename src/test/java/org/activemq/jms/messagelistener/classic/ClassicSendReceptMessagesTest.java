@@ -65,6 +65,7 @@ public class ClassicSendReceptMessagesTest {
 		Queue queueRecept = sessionRecept.createQueue("customerQueue");
 		MessageConsumer consumer = sessionRecept.createConsumer(queueRecept);
 		Message recept =consumer.receive(1000);
+		System.out.println("Reception:"+recept);
 		String result =((TextMessage) recept).getText();
 		System.out.println("Reception:"+result);
 		sessionRecept.close();
